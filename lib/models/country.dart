@@ -23,4 +23,52 @@ List<Country> countrys = [
       flag: 'assets/flags/in.png',
       name: 'Indian'
   ),
+  Country(
+      id: 1,
+      cases: 1203588,
+      recovered: 255555,
+      deaths: 3555,
+      flag: 'assets/flags/us.png',
+      name: 'USA'
+  ),
+  Country(
+      id: 2,
+      cases: 753578,
+      recovered: 353595,
+      deaths: 155,
+      flag: 'assets/flags/in.png',
+      name: 'Indian'
+  ),
+  Country(
+      id: 1,
+      cases: 1203588,
+      recovered: 255555,
+      deaths: 3555,
+      flag: 'assets/flags/us.png',
+      name: 'USA'
+  ),
+  Country(
+      id: 2,
+      cases: 753578,
+      recovered: 353595,
+      deaths: 155,
+      flag: 'assets/flags/in.png',
+      name: 'Indian'
+  ),
+  Country(
+      id: 1,
+      cases: 1203588,
+      recovered: 255555,
+      deaths: 3555,
+      flag: 'assets/flags/us.png',
+      name: 'USA'
+  ),
+  Country(
+      id: 2,
+      cases: 753578,
+      recovered: 353595,
+      deaths: 155,
+      flag: 'assets/flags/in.png',
+      name: 'Indian'
+  ),
 ];

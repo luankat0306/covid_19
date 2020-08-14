@@ -1,5 +1,7 @@
-import 'package:flare_flutter/flare_actor.dart';
+import 'package:covid_19/models/country.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,18 +30,119 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
         children: <Widget>[
-// App Bar
           AppBar(),
+          Expanded(
+              child: ListView.builder(
+                itemCount: countrys.length,
+                itemBuilder: (context, index) => CountryCard(
+                  itemIndex: index,
+                  country: countrys[index],
+                ),
+              )
+          ),
         ],
       ),
     );
   }
 }
 
+class CountryCard extends StatelessWidget {
+  final int itemIndex;
+  final Country country;
+
+  const CountryCard({
+    Key key, this.itemIndex, this.country,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      height: 120,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(5, 10),
+            blurRadius: 20,
+            color: Colors.black26.withOpacity(0.2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                height: 50,
+                width: 70,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 10,
+                      color: Colors.black26.withOpacity(0.2),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset(
+                      country.flag,
+                      fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Text(
+                  country.name,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(offset: Offset(0, 10), blurRadius: 30, color: Colors.grey)
+                    ],
+                  ),
+              ),
+            ],
+          ),
+          Container(
+            width: size.width *.70,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Counter(
+                    icon: Icons.sentiment_very_dissatisfied,
+                    title: "Cases",
+                    numbers: "${country.cases}",
+                    color: Colors.amberAccent),
+                Counter(
+                  icon: Icons.sentiment_dissatisfied,
+                  title: "Deaths",
+                  numbers: "${country.deaths}",
+                  color: Colors.redAccent,
+                ),
+                Counter(
+                  icon: Icons.sentiment_very_satisfied,
+                  title: "Recovered",
+                  numbers: "${country.recovered}",
+                  color: Colors.green,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+// APP BAR
 class AppBar extends StatefulWidget {
   @override
   _AppBarState createState() => _AppBarState();
@@ -50,29 +153,37 @@ class _AppBarState extends State<AppBar> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * .45,
+      height: size.height * .40,
       child: Stack(
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            height: size.height * .45 - 40,
+            height: size.height * .40 - 35,
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                ),
+              color: Colors.blue,
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(40),
+                bottomLeft: Radius.circular(40),
+              ),
             ),
             child: Row(
               children: <Widget>[
+                Expanded(
+                  child: FlareActor(
+                    "assets/animations/covid.flr",
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
+                    animation: "Hello",
+                  ),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       "All you need is\nstay at home",
-                      textAlign: TextAlign.left,
+                      textAlign: TextAlign.right,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 25,
@@ -83,7 +194,7 @@ class _AppBarState extends State<AppBar> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 20),
                       padding: EdgeInsets.symmetric(horizontal: 20),
-                      width: size.width * .60,
+                      width: size.width * .55,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(50),
@@ -97,23 +208,15 @@ class _AppBarState extends State<AppBar> {
                       ),
                       child: TextField(
                         decoration: InputDecoration(
-                            icon: Icon(Icons.search),
-                            hintText: "Search Country",
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
+                          icon: Icon(Icons.search),
+                          hintText: "Search Country",
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
                         ),
                       ),
                     ),
                   ],
                 ),
-                Expanded(
-                  child: FlareActor(
-                    "assets/animations/covid_19.flr",
-                    alignment: Alignment.centerLeft,
-                    fit: BoxFit.contain,
-                    animation: "Hello",
-                  ),
-                )
               ],
             ),
           ),
@@ -123,42 +226,27 @@ class _AppBarState extends State<AppBar> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              height: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 10,
-                    color: Colors.black26.withOpacity(0.2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  mainCounter(
-                      size: size,
-                      title: "Cases",
-                      numbers: "18,118,726",
-                      color: Colors.amberAccent),
-                  mainCounter(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                MainCounter(
                     size: size,
-                    title: "Deaths",
-                    numbers: "690,514",
-                    color: Colors.redAccent,
-                  ),
-                  mainCounter(
-                    size: size,
-                    title: "Recovered",
-                    numbers: "11,397,014",
-                    color: Colors.green,
-                  ),
-                ],
-              ),
+                    title: "Cases",
+                    numbers: "18,118,726",
+                    color: Colors.amberAccent),
+                MainCounter(
+                  size: size,
+                  title: "Deaths",
+                  numbers: "690,514",
+                  color: Colors.redAccent,
+                ),
+                MainCounter(
+                  size: size,
+                  title: "Recovered",
+                  numbers: "11,397,014",
+                  color: Colors.green,
+                ),
+              ],
             ),
           ),
         ],
@@ -166,13 +254,14 @@ class _AppBarState extends State<AppBar> {
     );
   }
 }
+
 // Title & Number
-class mainCounter extends StatelessWidget {
+class MainCounter extends StatelessWidget {
   final String title;
   final String numbers;
   final color;
 
-  const mainCounter({
+  const MainCounter({
     Key key,
     @required this.size,
     this.title,
@@ -184,22 +273,76 @@ class mainCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          numbers,
-          style: TextStyle(
-              fontSize: 20, color: color, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 5),
-        Text(
-          title,
-          style: TextStyle(
-            color: color.withOpacity(0.8),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      width: size.width *.30,
+      height: 80,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 10),
+            blurRadius: 10,
+            color: Colors.black26.withOpacity(0.2),
           ),
-        ),
-      ],
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            numbers,
+            style: TextStyle(
+                fontSize: 15, color: color, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          Text(
+            title,
+            style: TextStyle(
+              color: color.withOpacity(0.8),
+            ),
+          ),
+        ],
+      ),
     );
   }
+}
+
+class Counter extends StatelessWidget {
+  final String title;
+  final String numbers;
+  final color;
+  final icon;
+
+  const Counter({Key key, this.title, this.numbers, this.color, this.icon}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 5, 0, 15),
+            child: Icon( icon, color: color.withOpacity(0.8),),
+          ),
+          Text(
+            numbers,
+            style: TextStyle(
+                color: color, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          Text(
+            title,
+            style: TextStyle(
+                fontSize: 10, color: color.withOpacity(0.8),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }
