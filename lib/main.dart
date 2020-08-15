@@ -41,6 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: <Widget>[
           AppBar(),
+
+          // CASE NEW
           Container(
             padding: EdgeInsets.all(15),
             child: Row(
@@ -62,6 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+
+          // LIST COUNTRY
           Expanded(
               child: ListView.builder(
                 itemCount: countryForDisplay.length,
@@ -75,6 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  // APP BAR
   AppBar () {
     var size = MediaQuery.of(context).size;
     return Container(
@@ -187,9 +193,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
 }
-// APP BAR
+
+// ITEM COUNTRY
 class CountryCard extends StatelessWidget {
   final int itemIndex;
   final Country country;
@@ -217,6 +223,8 @@ class CountryCard extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
+
+          // FLAG
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -241,6 +249,8 @@ class CountryCard extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // NAME COUNTRY
               Text(
                 country.name,
                 style: TextStyle(
@@ -254,6 +264,8 @@ class CountryCard extends StatelessWidget {
               ),
             ],
           ),
+
+          // COUNTER
           Container(
             width: size.width *.70,
             child: Row(
